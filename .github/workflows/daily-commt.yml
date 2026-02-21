@@ -1,0 +1,24 @@
+name: Daily Repo Update
+
+on:
+  schedule:
+    - cron: '30 5 * * *' # Runs at 05:30 UTC daily
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 23f2005552@ds.study.iitm.ac.in
+        run: |
+          echo "Last update: $(date)" > daily_log.txt
+          git config --global user.email "23f2005552@ds.study.iitm.ac.in"
+          git config --global user.name "DevSync Automation"
+          git add daily_log.txt
+          git commit -m "Automated daily update for DevSync: $(date)" || echo "No changes to commit"
+          git push
